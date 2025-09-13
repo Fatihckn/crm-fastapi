@@ -1,0 +1,95 @@
+### Test CRM Backend API
+
+### 1. Health Check
+GET http://127.0.0.1:8000/health
+Accept: application/json
+
+###
+
+### 2. Register Admin User
+POST http://127.0.0.1:8000/users/register
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "admin123",
+  "role": "ADMIN"
+}
+
+###
+
+### 3. Register Agent User
+POST http://127.0.0.1:8000/users/register
+Content-Type: application/json
+
+{
+  "email": "agent@example.com",
+  "password": "agent123",
+  "role": "AGENT"
+}
+
+###
+
+### 4. Login as Admin
+POST http://127.0.0.1:8000/users/login
+Content-Type: application/json
+
+{
+  "email": "admin@example.com",
+  "password": "admin123"
+}
+
+###
+
+### 5. Login as Agent
+POST http://127.0.0.1:8000/users/login
+Content-Type: application/json
+
+{
+  "email": "agent@example.com",
+  "password": "agent123"
+}
+
+###
+
+### 6. Get Current User - Replace TOKEN with actual token from login
+GET http://127.0.0.1:8000/users/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZ2VudEBleGFtcGxlLmNvbSIsImV4cCI6MTc1NzYwMjIwM30.Mi8zxE9-ZlSVo9A4MvJwmTSHD1U3um3a-6M1yNbovHs
+Accept: application/json
+
+###
+
+### 7. API Documentation
+GET http://127.0.0.1:8000/docs
+Accept: text/html
+
+###
+
+### Test Notes API
+
+### 1. Create Note
+POST http://127.0.0.1:8000/notes/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZ2VudEBleGFtcGxlLmNvbSIsImV4cCI6MTc1Nzc1ODgyMn0.3lWz43vTaiQu4gOs6Fs0Ggf7SGdLqUdJPbdxLQDbN7w
+Content-Type: application/json
+
+{
+  "raw_text": "Customer called today complaining about slow response times on our website.\nThey mentioned that the website takes too long to load and they are losing customers because of this issue.\nThe customer is a premium client and this is affecting their business operations.\nWe need to investigate the server performance and optimize the database queries immediately.\nThis is an urgent matter that requires immediate attention from our technical team.\nThe customer has been with us for 3 years and this is the first time they have complained about performance issues."
+}
+
+
+###
+
+### 2. Get Note by ID
+GET http://127.0.0.1:8000/notes/24
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZ2VudEBleGFtcGxlLmNvbSIsImV4cCI6MTc1NzYwMjIwM30.Mi8zxE9-ZlSVo9A4MvJwmTSHD1U3um3a-6M1yNbovHs
+Accept: application/json
+
+###
+
+### 4. Get All Notes
+GET http://127.0.0.1:8000/notes/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZ2VudEBleGFtcGxlLmNvbSIsImV4cCI6MTc1Nzc1NTAzN30.r5SbO6ZetzQebNPBWAHS-Kzrbr--X4ZbWTBRzVAtfj0
+Accept: application/json
+
+###
+
