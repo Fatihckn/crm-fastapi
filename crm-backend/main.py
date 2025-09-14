@@ -1,9 +1,10 @@
 import threading
+import os
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routers import users, notes
-from tasks import celery_app
+from config import settings
 
 app = FastAPI(
     title="CRM Backend API",
@@ -22,13 +23,6 @@ app.add_middleware(
 app.include_router(users.router)
 app.include_router(notes.router)
 
-def start_celery_worker():
-    celery_app.worker_main(['worker', '--loglevel=info', '--pool=solo'])
-
-@app.on_event("startup")
-def startup_event():
-    thread = threading.Thread(target=start_celery_worker, daemon=True)
-    thread.start()
 
 @app.get("/")
 async def root():

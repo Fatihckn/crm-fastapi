@@ -52,7 +52,7 @@ Content-Type: application/json
 
 ###
 
-### 6. Get Current User - Replace TOKEN with actual token from login
+### 6. Get Current User
 GET http://127.0.0.1:8000/users/me
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZ2VudEBleGFtcGxlLmNvbSIsImV4cCI6MTc1NzYwMjIwM30.Mi8zxE9-ZlSVo9A4MvJwmTSHD1U3um3a-6M1yNbovHs
 Accept: application/json
@@ -69,7 +69,7 @@ Accept: text/html
 
 ### 1. Create Note
 POST http://127.0.0.1:8000/notes/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZ2VudEBleGFtcGxlLmNvbSIsImV4cCI6MTc1Nzc1ODgyMn0.3lWz43vTaiQu4gOs6Fs0Ggf7SGdLqUdJPbdxLQDbN7w
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZ2VudEBleGFtcGxlLmNvbSIsImV4cCI6MTc1Nzg0MTM4Nn0.tJHkl1Zi4Oi0o-nO4SvL5RpFIWAXC_OrtY-AQF2w4dQ
 Content-Type: application/json
 
 {

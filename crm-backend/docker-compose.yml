@@ -21,19 +21,6 @@ services:
       timeout: 20s
       retries: 10
 
-  # Redis for Celery
-  redis:
-    image: redis:7-alpine
-    container_name: crm_redis
-    ports:
-      - "6379:6379"
-    networks:
-      - crm_network
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      timeout: 10s
-      retries: 5
-
   # FastAPI Application
   app:
     build: .
@@ -42,12 +29,9 @@ services:
       - "8000:8000"
     environment:
       - DATABASE_URL=${DATABASE_URL}
-      - REDIS_URL=${REDIS_URL}
       - SECRET_KEY=${SECRET_KEY}
     depends_on:
       mysql:
-        condition: service_healthy
-      redis:
         condition: service_healthy
     networks:
       - crm_network
@@ -58,25 +42,6 @@ services:
         alembic upgrade head &&
         uvicorn main:app --host 0.0.0.0 --port 8000 --reload
       "
-
-  # Celery Worker (separate container)
-  celery:
-    build: .
-    container_name: crm_celery
-    environment:
-      - DATABASE_URL=${DATABASE_URL}
-      - REDIS_URL=${REDIS_URL}
-      - SECRET_KEY=${SECRET_KEY}
-    depends_on:
-      mysql:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-    networks:
-      - crm_network
-    volumes:
-      - ./:/app
-    command: celery -A tasks worker --loglevel=info --pool=solo
 
 volumes:
   mysql_data:

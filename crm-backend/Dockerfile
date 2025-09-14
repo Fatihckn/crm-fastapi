@@ -1,26 +1,27 @@
-# Use Python 3.11 slim image as base
+# Base image
 FROM python:3.11-slim
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    PYTHONPATH=/app
+    DATABASE_URL=postgresql+psycopg2://koyeb-adm:npg_Ee2ZwayAP1Jh@ep-silent-dust-a4lfcnlq.us-east-1.pg.koyeb.app/koyebdb \
+    SECRET_KEY=2703a4ceb92fe47227294748c2d03f07 \
+    ALGORITHM=HS256 \
+    ACCESS_TOKEN_EXPIRE_MINUTES=10 \
+    DEBUG=True \
+    HOST=0.0.0.0 \
+    PORT=8000
 
 # Set work directory
 WORKDIR /app
 
-# Install system dependencies
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-        gcc \
-        g++ \
-        libffi-dev \
-        libssl-dev \
-        pkg-config \
-        curl \
+# Install system dependencies required for psycopg2
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy requirements first for better caching
+# Copy requirements first for caching
 COPY requirements.txt .
 
 # Install Python dependencies
@@ -30,17 +31,8 @@ RUN pip install --no-cache-dir --upgrade pip \
 # Copy application code
 COPY . .
 
-# Create non-root user for security
-RUN useradd --create-home --shell /bin/bash app \
-    && chown -R app:app /app
-USER app
-
 # Expose port
 EXPOSE 8000
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:8000/health || exit 1
-
-# Run the application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Run migrations and start the application
+CMD ["sh", "-c", "alembic upgrade head && uvicorn main:app --host 0.0.0.0 --port 8000"]

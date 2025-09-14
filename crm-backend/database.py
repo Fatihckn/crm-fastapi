@@ -3,9 +3,11 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from config import settings
 
+if not settings.DATABASE_URL:
+    raise ValueError("DATABASE_URL environment variable is not set!")
+
 engine = create_engine(settings.DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
 Base = declarative_base()
 
 
